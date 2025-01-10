@@ -5,6 +5,12 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     namespace = "immersion_camp.week3.app.health_diary.health_diary_fe"
     compileSdk = flutter.compileSdkVersion
@@ -24,10 +30,16 @@ android {
         applicationId = "immersion_camp.week3.app.health_diary.health_diary_fe"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        minSdk = 21
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        // manifestPlaceholders 설정
+        manifestPlaceholders = [
+                KAKAO_NATIVE_APP_KEY: keystoreProperties['kakao_native_app_key'],
+                applicationName     : "io.flutter.app.FlutterApplication"
+        ]
     }
 
     buildTypes {
