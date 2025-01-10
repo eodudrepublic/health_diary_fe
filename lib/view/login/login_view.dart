@@ -20,10 +20,23 @@ class LoginView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
-      body: Center(
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.sp),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Expanded(
+                child: Container(
+              alignment: Alignment.topLeft,
+              padding: EdgeInsets.only(top: 0.075.sh),
+              child: Text("서비스 사용을 위해\n로그인이 필요해요",
+                  style: TextStyle(
+                      fontSize: 25.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                  textAlign: TextAlign.start),
+            )),
             _loginButton(userController),
             // _logoutButton(userController),
           ],
@@ -78,40 +91,38 @@ class LoginView extends StatelessWidget {
   Widget _loginButton(UserController controller) {
     return Obx(() {
       if (controller.user.value?.id == null) {
-        return SizedBox(
-          width: 0.6.sw,
-          child: ElevatedButton(
-            onPressed: () async {
-              await controller.kakaoLogin();
-              if (controller.user.value?.id != null) {
-                Log.info('로그인 성공');
-                // Get.offNamed('/landing');
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.kakaotalkYellow,
-              padding: EdgeInsets.symmetric(horizontal: 20.sp, vertical: 5.sp),
-              shape: RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(12), // 테두리 곡률 설정 : 12 픽셀(Pixel)
+        return ElevatedButton(
+          onPressed: () async {
+            await controller.kakaoLogin();
+            if (controller.user.value?.id != null) {
+              Log.info('로그인 성공');
+              // Get.offNamed('/landing');
+            }
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.kakaotalkYellow,
+            padding: EdgeInsets.symmetric(horizontal: 20.sp, vertical: 7.sp),
+            shape: RoundedRectangleBorder(
+              borderRadius:
+                  BorderRadius.circular(12), // 테두리 곡률 설정 : 12 픽셀(Pixel)
+            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center, // 중앙 정렬
+            mainAxisSize: MainAxisSize.max, // 버튼의 가로 확장
+            children: [
+              Image.asset(
+                'assets/icons/kakao_icon.png',
+                width: 30.sp,
+                height: 30.sp,
               ),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Image.asset(
-                  'assets/icons/kakao_icon.png',
-                  width: 30.sp,
-                  height: 30.sp,
-                ),
-                SizedBox(width: 10.sp),
-                Text(
-                  '카카오 로그인',
-                  style: TextStyle(
-                      color: AppColors.kakaotalkLabel, fontSize: 25.sp),
-                ),
-              ],
-            ),
+              SizedBox(width: 15.sp), // 아이콘과 텍스트 간격
+              Text(
+                '카카오 로그인',
+                style:
+                    TextStyle(color: AppColors.kakaotalkLabel, fontSize: 25.sp),
+              ),
+            ],
           ),
         );
       } else {
