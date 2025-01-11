@@ -1,27 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:health_diary_fe/view/home/widget/expandable_fab.dart';
 import '../../common/app_colors.dart';
 import '../../common/utils/logger.dart';
 import '../../common/widget/custom_bottom_navigation_bar.dart';
+import '../../view_model/home/home_controller.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class HomeView extends StatelessWidget {
+  final HomeController _homeController = Get.put(HomeController());
 
-  @override
-  State<HomeView> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
-  bool _isFabOpen = false;
-
-  /// FAB 상태 변경을 위한 콜백 함수
-  void _onFabStateChanged(bool isOpen) {
-    Log.info("_onFabStateChanged called : $isOpen");
-    setState(() {
-      _isFabOpen = isOpen;
-    });
-  }
+  HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -77,27 +66,25 @@ class _HomeViewState extends State<HomeView> {
               ),
             ],
           ),
-          // FAB가 열려 있을 때 오버레이 추가
-          if (_isFabOpen)
-            Positioned.fill(
-              child: GestureDetector(
-                onTap: () {
-                  // TODO : 현재 아래의 _onFabStateChanged가 FAB에 영향을 주지 못함. 함수가 호출되어 "_onFabStateChanged called : false"가 나와도 FAB가 닫히지 않음
-                  // 외부를 탭하면 FAB 닫기
-                  _onFabStateChanged(false);
-                },
-                child: Container(
-                  color: Colors.black.withOpacity(0.5),
+          Obx(() {
+            // FAB가 열려 있을 때 오버레이 추가
+            if (_homeController.isFabOpen.value) {
+              return Positioned.fill(
+                child: GestureDetector(
+                  onTap: _homeController.closeFab,
+                  child: Container(
+                    color: Colors.black.withOpacity(0.5),
+                  ),
                 ),
-              ),
-            ),
+              );
+            }
+            return const SizedBox.shrink();
+          }),
         ],
       ),
 
       // FAB 대신 ExpandableFab 위젯 사용
-      floatingActionButton: ExpandableFab(
-        onStateChange: _onFabStateChanged,
-      ),
+      floatingActionButton: ExpandableFab(),
     );
   }
 }
