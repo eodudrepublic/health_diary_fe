@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:health_diary_fe/view/home/home_view.dart';
 import 'package:health_diary_fe/view/login/login_view.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'common/key.dart';
@@ -34,10 +35,13 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           title: 'Health Diary',
           // debugShowCheckedModeBanner: false,
-          initialRoute: '/login',
+          initialRoute: '/home',
           getPages: [
             /// 로그인
             GetPage(name: '/login', page: () => LoginView()),
+
+            /// 메인 탭 1 : 홈
+            GetPage(name: '/home', page: () => HomeView()),
           ],
         );
       },
