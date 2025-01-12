@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:health_diary_fe/view/calendar/calendar_view.dart';
 import 'package:health_diary_fe/view/home/home_view.dart';
 import 'package:health_diary_fe/view/login/login_view.dart';
+import 'package:health_diary_fe/view/social/social_view.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'common/key.dart';
 import 'common/utils/logger.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           title: 'Health Diary',
           // debugShowCheckedModeBanner: false,
-          initialRoute: '/calendar',
+          initialRoute: '/social',
           getPages: [
             /// 로그인
             GetPage(name: '/login', page: () => LoginView()),
@@ -46,6 +47,9 @@ class MyApp extends StatelessWidget {
 
             /// 메인 탭 2 : 달력
             GetPage(name: '/calendar', page: () => CalendarView()),
+
+            /// 메인 탭 3 : 소셜
+            GetPage(name: '/social', page: () => SocialView()),
           ],
         );
       },

@@ -49,7 +49,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             iconSize: 25.sp,
             onPressed: () {
               Log.info("BNB :  Group 버튼 터치 -> GroupView");
-              // TODO : Get.offNamed('/group');
+              Get.offNamed('/social');
             },
           ),
           _buildIconButton(
