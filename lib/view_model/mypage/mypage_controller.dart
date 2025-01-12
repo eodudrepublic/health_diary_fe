@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class MyPageController extends GetxController {
   // 사용자 이름

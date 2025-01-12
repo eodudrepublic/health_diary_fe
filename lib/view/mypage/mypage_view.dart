@@ -73,15 +73,28 @@ class MyPageView extends StatelessWidget {
                 "개인정보 처리 방침",
               ]),
               SizedBox(height: 20.h),
-              Center(
-                child: TextButton(
-                  onPressed: () => print("로그아웃 클릭"),
-                  child: Text(
-                    "로그아웃",
-                    style: TextStyle(fontSize: 16.sp, color: Colors.red),
-                  ),
+              Align(
+                alignment: Alignment.centerRight, // 오른쪽 정렬
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextButton(
+                      onPressed: () => print("로그아웃 클릭"),
+                      child: Text(
+                        "로그아웃",
+                        style: TextStyle(fontSize: 16.sp, color: Colors.grey),
+                      ),
+                    ),
+                    // Container(
+                    //   height: 1, // 밑줄 두께
+                    //   width: 60, // 밑줄 길이 (텍스트 길이에 맞게 설정)
+                    //   color: Colors.grey, // 밑줄 색상
+                    // ),
+                  ],
                 ),
               ),
+
             ],
           ),
         ),
@@ -114,7 +127,7 @@ class Section extends StatelessWidget {
             style: TextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
-              color: Colors.pink,
+              color: Colors.white,
             ),
           ),
         ),
@@ -126,13 +139,25 @@ class Section extends StatelessWidget {
           ),
           child: Column(
             children: items
-                .map((item) => ListTile(
-              title: Text(
-                item,
-                style: TextStyle(fontSize: 14.sp, color: Colors.white),
-              ),
-              onTap: () => print("$item 클릭"),
-            ))
+                .asMap()
+                .entries
+                .map((entry) {
+              int index = entry.key;
+              String item = entry.value;
+              return Column(
+                children: [
+                  ListTile(
+                    title: Text(
+                      item,
+                      style: TextStyle(fontSize: 14.sp, color: Colors.white),
+                    ),
+                    onTap: () => print("$item 클릭"),
+                  ),
+                  if (index != items.length - 1)
+                    Divider(color: Colors.grey, thickness: 1),
+                ],
+              );
+            })
                 .toList(),
           ),
         ),
