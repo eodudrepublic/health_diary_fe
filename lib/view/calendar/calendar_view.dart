@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../../common/app_colors.dart';
+import '../../common/widget/custom_bottom_navigation_bar.dart';
 import '../../view_model/calendar/calendar_controller.dart';
 
 class CalendarView extends StatelessWidget {
@@ -268,8 +269,75 @@ class CalendarView extends StatelessWidget {
           ),
 
           /// 하단 몸 상태 변화 확인 위젯들 들어갈 부분
-          Expanded(child: Container())
+          Expanded(
+              child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 0.07.sw,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  /// 몸무게 변화
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "몸무게 변화",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.sp,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 0.03.sw,
+                    ),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                          // TODO : 디자인 참고
+                          ),
+                    ),
+                  ),
+
+                  /// 골격근량
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "골격근량",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.sp,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 0.03.sw,
+                    ),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                          // TODO : 디자인 참고
+                          ),
+                    ),
+                  ),
+
+                  // TODO : 또 뭐 들어가야 했더라
+                ],
+              ),
+            ),
+          ))
         ],
+      ),
+      bottomNavigationBar: const CustomBottomNavigationBar(
+        homeIconPath: 'assets/icons/home_off.svg',
+        calendarIconPath: 'assets/icons/calendar_on.svg',
+        socialIconPath: 'assets/icons/group_off.svg',
+        myPageIconPath: 'assets/icons/my_page_off.svg',
       ),
     );
   }

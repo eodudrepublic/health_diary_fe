@@ -61,7 +61,7 @@ class HomeView extends StatelessWidget {
               const CustomBottomNavigationBar(
                 homeIconPath: 'assets/icons/home_on.svg',
                 calendarIconPath: 'assets/icons/calendar_off.svg',
-                groupIconPath: 'assets/icons/group_off.svg',
+                socialIconPath: 'assets/icons/group_off.svg',
                 myPageIconPath: 'assets/icons/my_page_off.svg',
               ),
             ],

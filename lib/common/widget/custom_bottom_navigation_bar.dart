@@ -8,14 +8,14 @@ import '../utils/logger.dart';
 class CustomBottomNavigationBar extends StatelessWidget {
   final String homeIconPath;
   final String calendarIconPath;
-  final String groupIconPath;
+  final String socialIconPath;
   final String myPageIconPath;
 
   const CustomBottomNavigationBar({
     super.key,
     required this.homeIconPath,
     required this.calendarIconPath,
-    required this.groupIconPath,
+    required this.socialIconPath,
     required this.myPageIconPath,
   });
 
@@ -41,11 +41,11 @@ class CustomBottomNavigationBar extends StatelessWidget {
             iconSize: 30.sp,
             onPressed: () {
               Log.info("BNB :  Calendar 버튼 터치 -> CalendarView");
-              // TODO : Get.offNamed('/calendar');
+              Get.offNamed('/calendar');
             },
           ),
           _buildIconButton(
-            iconPath: groupIconPath,
+            iconPath: socialIconPath,
             iconSize: 25.sp,
             onPressed: () {
               Log.info("BNB :  Group 버튼 터치 -> GroupView");
