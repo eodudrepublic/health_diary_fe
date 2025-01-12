@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:health_diary_fe/view/calendar/calendar_view.dart';
 import 'package:health_diary_fe/view/home/home_view.dart';
 import 'package:health_diary_fe/view/login/login_view.dart';
+import 'package:health_diary_fe/view/mypage/mypage_view.dart';
 import 'package:health_diary_fe/view/social/social_view.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'common/key.dart';
@@ -50,6 +51,9 @@ class MyApp extends StatelessWidget {
 
             /// 메인 탭 3 : 소셜
             GetPage(name: '/social', page: () => SocialView()),
+
+            /// 메인 탭 4 : 마이페이지
+            GetPage(name: '/mypage', page: () => MyPageView()),
           ],
         );
       },

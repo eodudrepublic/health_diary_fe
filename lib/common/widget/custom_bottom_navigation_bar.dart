@@ -57,7 +57,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             iconSize: 30.sp,
             onPressed: () {
               Log.info("BNB :  MyPage 버튼 터치 -> MyPageView");
-              // TODO : Get.offNamed('/my_page');
+              Get.offNamed('/mypage');
             },
           ),
         ],
