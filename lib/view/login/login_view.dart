@@ -96,7 +96,7 @@ class LoginView extends StatelessWidget {
             await controller.kakaoLogin();
             if (controller.user.value?.id != null) {
               Log.info('로그인 성공');
-              // Get.offNamed('/landing');
+              Get.offNamed('/home');
             }
           },
           style: ElevatedButton.styleFrom(
