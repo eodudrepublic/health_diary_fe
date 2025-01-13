@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:health_diary_fe/common/app_colors.dart';
 import '../../../common/utils/logger.dart';
 import '../../../view_model/home/home_controller.dart';
-import '../../../view_model/home/widget/expandable_fab_controller.dart';
 
 /// 확장 가능한 FAB 위젯
 // TODO : 다음엔 flutter_expandable_fab 패키지를 사용해보자
@@ -33,7 +32,6 @@ class ExpandableFab extends StatelessWidget {
                     label: "사진 촬영",
                     onTap: () {
                       Log.info("FAB : 사진 촬영");
-                      //ExpandableFabController().onCameraTap();
                       // TODO: 사진 촬영 로직
                     },
                   ),
@@ -43,7 +41,6 @@ class ExpandableFab extends StatelessWidget {
                     label: "루틴 만들기",
                     onTap: () {
                       Log.info("FAB : 루틴 만들기");
-                      ExpandableFabController().onCreateRoutineTap();
                       // TODO: 루틴 만들기 로직
                     },
                   ),
@@ -53,7 +50,6 @@ class ExpandableFab extends StatelessWidget {
                     label: "식단 기록 하기",
                     onTap: () {
                       Log.info("FAB : 식단 기록 하기");
-                      ExpandableFabController().onRecordDietTap();
                       // TODO: 식단 기록 로직
                     },
                   ),

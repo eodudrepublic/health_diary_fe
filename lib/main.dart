@@ -26,29 +26,32 @@ Future<void> main() async {
   KakaoSdk.init(nativeAppKey: myNativeAppKey);
   Log.wtf("KakaoSdk initialized : ${await KakaoSdk.origin} -> 이게 왜 키 해쉬예요 ㅅㅂ");
 
-  // 카메라 초기화
-  List<CameraDescription> cameras = [];
-  CameraDescription? firstCamera;
-
+  // 카메라 초기화 (전/후면 카메라만 필터링)
+  List<CameraDescription> filteredCameras = [];
   try {
-    cameras = await availableCameras();
-    if (cameras.isNotEmpty) {
-      firstCamera = cameras.first;
-      Log.info("카메라 초기화 완료: ${firstCamera.name}");
+    final allCameras = await availableCameras();
+    filteredCameras = allCameras
+        .where((camera) =>
+            camera.lensDirection == CameraLensDirection.front ||
+            camera.lensDirection == CameraLensDirection.back)
+        .toList();
+
+    if (filteredCameras.isNotEmpty) {
+      Log.info("카메라 필터링 완료: ${filteredCameras.length}개 카메라");
     } else {
-      Log.warning("사용 가능한 카메라가 없습니다.");
+      Log.warning("사용 가능한 전/후면 카메라가 없습니다.");
     }
   } catch (e) {
     Log.error("카메라 초기화 중 오류 발생: $e");
   }
 
-  runApp(MyApp(camera: firstCamera));
+  runApp(MyApp(cameras: filteredCameras));
 }
 
 class MyApp extends StatelessWidget {
-  final CameraDescription? camera;
+  final List<CameraDescription> cameras;
 
-  const MyApp({super.key, this.camera});
+  const MyApp({super.key, required this.cameras});
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +60,11 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return GetMaterialApp(
           title: 'Health Diary',
-          // debugShowCheckedModeBanner: false,
-          initialRoute: '/login',
-          //home: CameraScreen(camera: camera!),
-          //home: HomeView(),
+          home: cameras.isNotEmpty
+              ? CameraScreen(cameras: cameras)
+              : const Scaffold(
+                  body: Center(child: Text('사용 가능한 카메라가 없습니다.')),
+                ),
           getPages: [
             /// 로그인
             GetPage(name: '/login', page: () => LoginView()),
@@ -76,10 +80,6 @@ class MyApp extends StatelessWidget {
 
             /// 메인 탭 4 : 마이페이지
             GetPage(name: '/mypage', page: () => MyPageView()),
-
-            /// 카메라 화면
-            GetPage(name: '/camera', page: () => CameraScreen(camera: camera!),
-            ),
           ],
         );
       },

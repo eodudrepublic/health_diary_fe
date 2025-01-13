@@ -1,10 +1,61 @@
+// (1) KotlinCompile 임포트 추가
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+buildscript {
+    // (2) 프로젝트에서 사용하는 Kotlin 버전에 맞춤
+    //     (settings.gradle에서 org.jetbrains.kotlin.android "1.8.22" 확인)
+    ext.kotlin_version = '1.8.22'
+
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        // (3) AGP는 settings.gradle에서 이미 8.5.1로 설정 중
+        //     여기선 Kotlin Gradle Plugin만 선언
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+// (4) allprojects / subprojects 설정
 allprojects {
     repositories {
         google()
         mavenCentral()
     }
+
+    subprojects {
+        afterEvaluate { project ->
+            // (4-1) 안드로이드 모듈(앱/라이브러리)만 적용
+            if (project.hasProperty('android')) {
+                project.android {
+                    // (4-2) namespace가 누락된 라이브러리(예: image_gallery_saver)에 자동 부여
+                    if (namespace == null) {
+                        namespace project.group
+                    }
+
+                    // (4-3) Java/Kotlin 1.8 설정 (app/build.gradle과 동일)
+                    compileOptions {
+                        sourceCompatibility JavaVersion.VERSION_1_8
+                        targetCompatibility JavaVersion.VERSION_1_8
+                    }
+                    tasks.withType(KotlinCompile).configureEach {
+                        kotlinOptions {
+                            jvmTarget = "1.8"
+                        }
+                    }
+                    java {
+                        toolchain {
+                            languageVersion = JavaLanguageVersion.of(17)
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
+// (5) 기존 빌드 디렉토리 세팅
 rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
@@ -13,6 +64,7 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
+// (6) clean 태스크
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
