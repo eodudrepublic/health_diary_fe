@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
+import 'package:get/get.dart';
 import '../../common/utils/logger.dart';
+import 'home_view.dart';
 
 class CameraScreen extends StatefulWidget {
   final CameraDescription camera;
@@ -20,6 +22,7 @@ class _CameraScreenState extends State<CameraScreen> {
   late Future<void> _initializeControllerFuture;
   String _currentDateTime = '';
   Timer? _timer;
+  int rotation = 0; // 회전 상태
 
   @override
   void initState() {
@@ -34,15 +37,14 @@ class _CameraScreenState extends State<CameraScreen> {
     _updateDateTime();
 
     // 1초마다 날짜와 시간을 업데이트
-    _timer =
-        Timer.periodic(Duration(seconds: 1), (Timer t) => _updateDateTime());
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer t) => _updateDateTime());
   }
 
   void _updateDateTime() {
     final now = DateTime.now();
     final formattedDateTime =
         "${now.year}.${now.month.toString().padLeft(2, '0')}.${now.day.toString().padLeft(2, '0')} "
-        "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}:${now.second.toString().padLeft(2, '0')}";
+        "${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
     setState(() {
       _currentDateTime = formattedDateTime;
     });
@@ -101,51 +103,88 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text(
+          "사진촬영",
+          style: TextStyle(color: Colors.white, fontSize: 18),
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Get.offAll(() => HomeView()); // 뒤로가기 버튼 동작
+          },
+        ),
+      ),
       body: FutureBuilder<void>(
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return Stack(
               children: [
-                // 1:1 비율의 카메라 미리보기
+                // 카메라 미리보기
                 Center(
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: CameraPreview(_controller),
+                  child: Transform.rotate(
+                    angle: 90 * 3.1415926535 / 180,
+                    child: AspectRatio(
+                      //aspectRatio: _controller.value.aspectRatio,
+                      aspectRatio: 1,
+                      child: CameraPreview(_controller),
+                    ),
                   ),
                 ),
-                // 날짜 및 시간 오버레이 (실시간 표시)
+                // 날짜 및 시간 오버레이 (카메라 미리보기 위에 표시)
                 Positioned(
-                  top: 20,
-                  left: 20,
+                  top: 16,
+                  left: 16,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     color: Colors.black54,
                     child: Text(
                       _currentDateTime,
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ),
                 ),
-                // 사진 촬영 버튼
+                // 하단 버튼 (사진 촬영, 갤러리, 카메라 전환)
                 Positioned(
-                  bottom: 30,
+                  bottom: 40,
                   left: 0,
                   right: 0,
-                  child: Center(
-                    child: FloatingActionButton(
-                      onPressed: _takePicture,
-                      child: Icon(Icons.camera),
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.photo_library, size: 30, color: Colors.white),
+                        onPressed: () {
+                          Log.info("Open gallery");
+                        },
+                      ),
+                      const SizedBox(width: 40),
+                      FloatingActionButton(
+                        backgroundColor: Colors.white,
+                        onPressed: _takePicture,
+                        child: const Icon(Icons.camera, size: 28, color: Colors.black),
+                      ),
+                      const SizedBox(width: 40),
+                      IconButton(
+                        icon: const Icon(Icons.loop, size: 30, color: Colors.white),
+                        onPressed: () {
+                          Log.info("Switch camera");
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ],
             );
           } else {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
         },
       ),
+      backgroundColor: Colors.black,
     );
   }
 }

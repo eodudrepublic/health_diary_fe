@@ -58,8 +58,9 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           title: 'Health Diary',
           // debugShowCheckedModeBanner: false,
-          // initialRoute: '/social',
-          home: CameraScreen(camera: camera!),
+          initialRoute: '/login',
+          //home: CameraScreen(camera: camera!),
+          //home: HomeView(),
           getPages: [
             /// 로그인
             GetPage(name: '/login', page: () => LoginView()),
@@ -75,6 +76,10 @@ class MyApp extends StatelessWidget {
 
             /// 메인 탭 4 : 마이페이지
             GetPage(name: '/mypage', page: () => MyPageView()),
+
+            /// 카메라 화면
+            GetPage(name: '/camera', page: () => CameraScreen(camera: camera!),
+            ),
           ],
         );
       },
