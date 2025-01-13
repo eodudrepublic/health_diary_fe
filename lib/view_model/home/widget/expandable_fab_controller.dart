@@ -33,7 +33,7 @@ class ExpandableFabController extends GetxController {
       Log.error("사용 가능한 카메라가 없습니다.");
     }
   }
-  
+
   // 루틴 만들기 버튼 로직
   void onCreateRoutineTap() {
     Log.info("FAB : 루틴 만들기");
