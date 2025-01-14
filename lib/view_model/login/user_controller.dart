@@ -31,19 +31,26 @@ class UserController extends GetxController {
 
         // Prepare JSON payload
         Map<String, dynamic> payload = {
-          "user_id": appUser.id,
+          "kakao_id": appUser.id.toString(), // 필드 이름 변경
           "nickname": appUser.nickname ?? "",
-          "profile_image_url": appUser.profileImageUrl ?? "",
+          "profile_image": appUser.profileImageUrl ?? "", // 필드 이름 변경
+          "connected_at": DateTime.now().toIso8601String(), // 누락된 필드 추가
         };
+
 
         // Send POST request to the server
         var response = await http.post(
-          Uri.parse("$serverUrl:8000/users/user"),
+          Uri.parse("$serverUrl:8000/users/login"),
           headers: {"Content-Type": "application/json"},
           body: jsonEncode(payload),
-        )
-            // .timeout(Duration(seconds: 15))
-            ;
+        ).timeout(Duration(seconds: 15)); // 타임아웃 추가
+        //
+
+        // 응답 확인
+        Log.info("Status Code: ${response.statusCode}");
+        Log.info("Response Body: ${response.body}");
+        Log.info("Payload being sent: ${jsonEncode(payload)}");
+
 
         if (response.statusCode == 200 || response.statusCode == 201) {
           var responseData = jsonDecode(response.body);

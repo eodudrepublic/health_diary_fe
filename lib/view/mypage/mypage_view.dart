@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import '../../common/app_colors.dart';
-import '../../view_model/mypage/mypage_controller.dart';
 import '../../common/widget/custom_bottom_navigation_bar.dart';
 
 class MyPageView extends StatelessWidget {
-  final MyPageController _controller = Get.put(MyPageController());
-
   MyPageView({super.key});
 
   @override
@@ -20,81 +16,87 @@ class MyPageView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // 프로필 섹션
               Row(
                 children: [
-                  Obx(() => CircleAvatar(
+                  CircleAvatar(
                     radius: 40.r,
                     backgroundColor: AppColors.borderGreyColor,
-                    backgroundImage: _controller.profileImage.value != null
-                        ? NetworkImage(_controller.profileImage.value!)
-                        : null,
-                    child: _controller.profileImage.value == null
-                        ? Icon(Icons.person, size: 40.r, color: Colors.white)
-                        : null,
-                  )),
+                    backgroundImage: null, // 프로필 이미지는 null로 기본 설정
+                    child: Icon(Icons.person, size: 40.r, color: Colors.white),
+                  ),
                   SizedBox(width: 10.w),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Obx(() => Text(
-                        _controller.name.value,
+                      Text(
+                        "이현정", // 닉네임
                         style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
-                      )),
-                      Obx(() => Text(
-                        "총 ${_controller.exerciseDays.value}일 운동 완료",
+                      ),
+                      Text(
+                        "총 10일 운동 완료", // 운동 완료 정보
                         style: TextStyle(
                           fontSize: 14.sp,
                           color: Colors.grey,
                         ),
-                      )),
+                      ),
                     ],
                   ),
                 ],
               ),
               SizedBox(height: 20.h),
-              Section(title: "친구 관리", items: [
-                "친구 추가",
-                "내 QR 코드",
-                "친구 목록",
-              ]),
+              // 친구 관리 섹션
+              Section(
+                title: "친구 관리",
+                items: [
+                  SectionItem(title: "친구 추가", onTap: () => print("친구 추가 클릭")),
+                  SectionItem(
+                    title: "내 QR 코드",
+                    onTap: () => _showQrCodeModal(context), // QR 코드 모달 호출
+                  ),
+                  SectionItem(
+                    title: "친구 목록",
+                    onTap: () => _showFriendListModal(context), // 친구 목록 모달 호출
+                  ),
+                ],
+              ),
               SizedBox(height: 20.h),
-              Section(title: "설정", items: [
-                "테마",
-                "앱 잠금 등록",
-                "보이스",
-              ]),
+              // 설정 섹션
+              Section(
+                title: "설정",
+                items: [
+                  SectionItem(title: "테마", onTap: () => print("테마 클릭")),
+                  SectionItem(title: "앱 잠금 등록", onTap: () => print("앱 잠금 클릭")),
+                  SectionItem(title: "보이스", onTap: () => print("보이스 클릭")),
+                ],
+              ),
               SizedBox(height: 20.h),
-              Section(title: "이용 규칙", items: [
-                "이용 약관",
-                "개인정보 처리 방침",
-              ]),
+              // 이용 규칙 섹션
+              Section(
+                title: "이용 규칙",
+                items: [
+                  SectionItem(title: "이용 약관", onTap: () => print("이용 약관 클릭")),
+                  SectionItem(
+                      title: "개인정보 처리 방침",
+                      onTap: () => print("개인정보 처리 방침 클릭")),
+                ],
+              ),
               SizedBox(height: 20.h),
+              // 로그아웃 버튼
               Align(
-                alignment: Alignment.centerRight, // 오른쪽 정렬
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextButton(
-                      onPressed: () => print("로그아웃 클릭"),
-                      child: Text(
-                        "로그아웃",
-                        style: TextStyle(fontSize: 16.sp, color: Colors.grey),
-                      ),
-                    ),
-                    // Container(
-                    //   height: 1, // 밑줄 두께
-                    //   width: 60, // 밑줄 길이 (텍스트 길이에 맞게 설정)
-                    //   color: Colors.grey, // 밑줄 색상
-                    // ),
-                  ],
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () => print("로그아웃 클릭"),
+                  child: Text(
+                    "로그아웃",
+                    style: TextStyle(fontSize: 16.sp, color: Colors.grey),
+                  ),
                 ),
               ),
-
             ],
           ),
         ),
@@ -107,13 +109,114 @@ class MyPageView extends StatelessWidget {
       ),
     );
   }
+
+  // QR 코드 모달
+  void _showQrCodeModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          height: 300.h,
+          margin: EdgeInsets.all(20.r),
+          padding: EdgeInsets.all(20.r),
+          decoration: BoxDecoration(
+            color: AppColors.textBackgroundColor,
+            borderRadius: BorderRadius.circular(15.r),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "내 QR 코드",
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(height: 20.h),
+              Container(
+                width: 150.w,
+                height: 150.w,
+                color: Colors.white, // 임시 QR 코드 배경색
+                child: Center(
+                  child: Text(
+                    "QR CODE",
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.h),
+              Text(
+                "QR 코드를 스캔하여 친구를 추가하세요",
+                style: TextStyle(fontSize: 14.sp, color: Colors.grey),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  // 친구 목록 모달
+  void _showFriendListModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          height: 400.h,
+          margin: EdgeInsets.all(20.r),
+          padding: EdgeInsets.all(20.r),
+          decoration: BoxDecoration(
+            color: AppColors.textBackgroundColor,
+            borderRadius: BorderRadius.circular(15.r),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "친구 목록",
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(height: 20.h),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: 10, // 예제 데이터: 10명의 친구
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(
+                        "친구 $index",
+                        style: TextStyle(fontSize: 14.sp, color: Colors.white),
+                      ),
+                      onTap: () => print("친구 $index 클릭"),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }
 
+// 공통 섹션 위젯
 class Section extends StatelessWidget {
   final String title;
-  final List<String> items;
+  final List<SectionItem> items;
 
-  const Section({required this.title, required this.items, Key? key}) : super(key: key);
+  const Section({required this.title, required this.items, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -141,27 +244,34 @@ class Section extends StatelessWidget {
             children: items
                 .asMap()
                 .entries
-                .map((entry) {
-              int index = entry.key;
-              String item = entry.value;
-              return Column(
+                .map(
+                  (entry) => Column(
                 children: [
                   ListTile(
                     title: Text(
-                      item,
-                      style: TextStyle(fontSize: 14.sp, color: Colors.white),
+                      entry.value.title,
+                      style:
+                      TextStyle(fontSize: 14.sp, color: Colors.white),
                     ),
-                    onTap: () => print("$item 클릭"),
+                    onTap: entry.value.onTap,
                   ),
-                  if (index != items.length - 1)
+                  if (entry.key != items.length - 1)
                     Divider(color: Colors.grey, thickness: 1),
                 ],
-              );
-            })
+              ),
+            )
                 .toList(),
           ),
         ),
       ],
     );
   }
+}
+
+// 섹션 아이템
+class SectionItem {
+  final String title;
+  final VoidCallback onTap;
+
+  SectionItem({required this.title, required this.onTap});
 }
