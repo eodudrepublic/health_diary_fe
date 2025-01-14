@@ -4,11 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:health_diary_fe/view/calendar/calendar_view.dart';
-import 'package:health_diary_fe/view/home/camera_test.dart';
+import 'package:health_diary_fe/view/camera/camera_view.dart';
 import 'package:health_diary_fe/view/home/home_view.dart';
 import 'package:health_diary_fe/view/login/login_view.dart';
 import 'package:health_diary_fe/view/mypage/mypage_view.dart';
 import 'package:health_diary_fe/view/social/social_view.dart';
+import 'package:health_diary_fe/view_model/camera/camera_controller.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'common/key.dart';
 import 'common/utils/logger.dart';
@@ -26,18 +27,30 @@ Future<void> main() async {
   KakaoSdk.init(nativeAppKey: myNativeAppKey);
   Log.wtf("KakaoSdk initialized : ${await KakaoSdk.origin} -> 이게 왜 키 해쉬예요 ㅅㅂ");
 
-  // 카메라 초기화 (전/후면 카메라만 필터링)
+  // 카메라 초기화 (전면 하나, 후면 하나만 필터링)
   List<CameraDescription> filteredCameras = [];
   try {
     final allCameras = await availableCameras();
-    filteredCameras = allCameras
-        .where((camera) =>
-            camera.lensDirection == CameraLensDirection.front ||
-            camera.lensDirection == CameraLensDirection.back)
+
+    // 필터링: 전면 카메라 하나, 후면 카메라 하나
+    final frontCameras = allCameras
+        .where((camera) => camera.lensDirection == CameraLensDirection.front)
+        .toList();
+    final backCameras = allCameras
+        .where((camera) => camera.lensDirection == CameraLensDirection.back)
         .toList();
 
+    if (backCameras.isNotEmpty) {
+      filteredCameras.add(backCameras.first);
+    }
+
+    if (frontCameras.isNotEmpty) {
+      filteredCameras.add(frontCameras.first);
+    }
+
     if (filteredCameras.isNotEmpty) {
-      Log.info("카메라 필터링 완료: ${filteredCameras.length}개 카메라");
+      Log.info(
+          "카메라 필터링 완료: ${filteredCameras.length}개 카메라 (후면: ${backCameras.isNotEmpty ? 1 : 0}, 전면: ${frontCameras.isNotEmpty ? 1 : 0})");
     } else {
       Log.warning("사용 가능한 전/후면 카메라가 없습니다.");
     }
@@ -60,17 +73,31 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return GetMaterialApp(
           title: 'Health Diary',
-          home: cameras.isNotEmpty
-              ? CameraScreen(cameras: cameras)
-              : const Scaffold(
-                  body: Center(child: Text('사용 가능한 카메라가 없습니다.')),
-                ),
+          initialRoute: '/diet',
           getPages: [
             /// 로그인
             GetPage(name: '/login', page: () => LoginView()),
 
             /// 메인 탭 1 : 홈
             GetPage(name: '/home', page: () => HomeView()),
+
+            /// 오운완
+            GetPage(
+              name: '/oh_un_wan',
+              page: () => CameraView(imageTitle: "오운완"),
+              binding: BindingsBuilder(() {
+                Get.put(MyCameraController(cameras: cameras));
+              }),
+            ),
+
+            /// 식단기록
+            GetPage(
+              name: '/diet',
+              page: () => CameraView(imageTitle: "식단기록"),
+              binding: BindingsBuilder(() {
+                Get.put(MyCameraController(cameras: cameras));
+              }),
+            ),
 
             /// 메인 탭 2 : 달력
             GetPage(name: '/calendar', page: () => CalendarView()),
