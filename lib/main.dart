@@ -7,6 +7,7 @@ import 'package:health_diary_fe/view/calendar/calendar_view.dart';
 import 'package:health_diary_fe/view/camera/camera_view.dart';
 import 'package:health_diary_fe/view/home/home_view.dart';
 import 'package:health_diary_fe/view/login/login_view.dart';
+import 'package:health_diary_fe/view/make_routine/routine_view.dart';
 import 'package:health_diary_fe/view/mypage/mypage_view.dart';
 import 'package:health_diary_fe/view/social/social_view.dart';
 import 'package:health_diary_fe/view_model/camera/camera_controller.dart';
@@ -73,7 +74,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return GetMaterialApp(
           title: 'Health Diary',
-          initialRoute: '/home',
+          initialRoute: '/login',
           getPages: [
             /// 로그인
             GetPage(name: '/login', page: () => LoginView()),
@@ -89,6 +90,8 @@ class MyApp extends StatelessWidget {
                 Get.put(MyCameraController(cameras: cameras));
               }),
             ),
+
+            GetPage(name: '/make_routine', page: () => RoutineView()),
 
             /// 식단기록
             GetPage(
