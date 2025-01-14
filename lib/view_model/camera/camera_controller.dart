@@ -12,6 +12,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:path/path.dart' as p;
 import '../../common/utils/logger.dart';
 import '../../model/camera_model.dart';
+import '../../service/image_service.dart';
 
 /// GetX를 활용한 카메라 제어 컨트롤러.
 /// 카메라 초기화, 전/후면 카메라 전환, 사진 촬영 및 저장, 오버레이 추가 등의 작업을 처리합니다.
@@ -163,19 +164,34 @@ class MyCameraController extends GetxController with WidgetsBindingObserver {
     }
 
     try {
+      // 1) 사진 촬영
       final xFile = await _cameraController.takePicture(); // 사진 촬영
       final timestamp = DateTime.now(); // 현재 시간
       final overlayText = currentDateTime.value; // 날짜/시간 오버레이 텍스트
 
+      // 2) 오버레이 추가
       final editedImage =
           await _addDateTimeToImage(xFile.path, overlayText); // 이미지에 오버레이 추가
+
+      // 3) 이미지 파일 저장
       final filePath = await _saveImage(editedImage, category); // 수정된 이미지를 저장
 
-      // CameraModel 생성 및 리스트에 추가
+      // 4) CameraModel 생성 및 리스트에 추가
       final model = CameraModel(imagePath: filePath, timestamp: timestamp);
       photoList.add(model);
 
       Log.info("사진이 저장되고 리스트에 추가되었습니다: $filePath");
+
+      // 5) 저장 후 서버 업로드 (category에 따라 다른 엔드포인트 호출)
+      if (category == "오운완") {
+        Log.info("[오운완] 사진 업로드를 시작합니다...");
+        await ImageService.uploadOwnPhoto(filePath);
+      } else if (category == "식단기록") {
+        Log.info("[식단기록] 사진 업로드를 시작합니다...");
+        await ImageService.uploadMealPhoto(filePath);
+      } else {
+        Log.warning("알 수 없는 카테고리입니다. 업로드를 진행하지 않습니다.");
+      }
     } catch (e) {
       Log.error("사진 촬영 실패: $e");
     }
@@ -253,7 +269,7 @@ class MyCameraController extends GetxController with WidgetsBindingObserver {
     return img.encodeJpg(originalImg); // 이미지를 JPG 형식으로 다시 인코딩
   }
 
-  /// 편집된 이미지를 디바이스 저장소에 저장.
+  /// 편집된 이미지를 디바이스 저장소에 저장 후 파일 경로 반환
   Future<String> _saveImage(List<int> imageBytes, String category) async {
     // TODO : OurApp -> 앱 이름으로 변경
     final extDir =
@@ -265,6 +281,7 @@ class MyCameraController extends GetxController with WidgetsBindingObserver {
     final filePath = p.join(
         extDir.path, "photo_${DateTime.now().millisecondsSinceEpoch}.jpg");
     File(filePath).writeAsBytesSync(imageBytes); // 이미지를 저장
+    // TODO : 사진 저장 후 갤러리 갱신
     return filePath;
   }
 
