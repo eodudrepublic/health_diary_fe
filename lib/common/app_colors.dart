@@ -5,10 +5,9 @@ class AppColors {
   static const Color kakaotalkYellow = Color(0xFFFEE500);
   static const Color kakaotalkLabel = Color(0xD8000000);
 
-  // 앱 테마 컬러 3종
+  // 앱 테마 컬러 2종
   static const Color backgroundColor = Color(0xFF17171B);
-  static const Color primaryColor1 = Color(0xFFDDFE11);
-  static const Color primaryColor2 = Color(0xFFEE1171);
+  static const Color primaryColor = Color(0xFFEE1171);
 
   // 상단 위젯 배경/텍스트에 사용되는 컬러
   static const Color textBackgroundColor = Color(0xFF2C2E34);

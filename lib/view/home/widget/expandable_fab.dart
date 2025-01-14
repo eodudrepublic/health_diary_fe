@@ -41,7 +41,7 @@ class ExpandableFab extends StatelessWidget {
                     label: "루틴 만들기",
                     onTap: () {
                       Log.info("FAB : 루틴 만들기");
-                      // TODO: 루틴 만들기 로직
+                      Get.toNamed('/make_routine');
                     },
                   ),
                   SizedBox(height: 20.sp),
@@ -124,7 +124,7 @@ class ExpandableFab extends StatelessWidget {
             height: 60.sp,
             alignment: Alignment.center,
             decoration: const BoxDecoration(
-                shape: BoxShape.circle, color: AppColors.primaryColor2),
+                shape: BoxShape.circle, color: AppColors.primaryColor),
             child: Image.asset(
               iconPath,
               width: 35.sp,

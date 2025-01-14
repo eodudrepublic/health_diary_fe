@@ -59,7 +59,7 @@ class CalendarView extends StatelessWidget {
                                 //     ? FontWeight.bold
                                 //     : FontWeight.normal,
                                 color: isSelected
-                                    ? AppColors.primaryColor2
+                                    ? AppColors.primaryColor
                                     : Colors.white,
                               ),
                             ),
@@ -86,7 +86,7 @@ class CalendarView extends StatelessWidget {
                                   return Container(
                                     height: 2.sp,
                                     width: textWidth + 2.sp, // 텍스트 길이에 맞춤
-                                    color: AppColors.primaryColor2,
+                                    color: AppColors.primaryColor,
                                   );
                                 },
                               ),
@@ -222,7 +222,7 @@ class CalendarView extends StatelessWidget {
                         child: Text(
                           '${day.day}',
                           style: TextStyle(
-                            color: AppColors.primaryColor1, // 오늘 날짜의 텍스트 색상
+                            color: AppColors.primaryColor, // 오늘 날짜의 텍스트 색상
                           ),
                         ),
                       );
@@ -234,7 +234,7 @@ class CalendarView extends StatelessWidget {
                         child: Text(
                           '${day.day}',
                           style: TextStyle(
-                            color: AppColors.primaryColor2, // 선택된 날짜의 텍스트 색상
+                            color: AppColors.primaryColor, // 선택된 날짜의 텍스트 색상
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -251,7 +251,7 @@ class CalendarView extends StatelessWidget {
                             width: 6.sp,
                             height: 6.sp,
                             decoration: BoxDecoration(
-                              color: AppColors.primaryColor2,
+                              color: AppColors.primaryColor,
                               shape: BoxShape.circle,
                             ),
                           ),

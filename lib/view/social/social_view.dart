@@ -33,7 +33,7 @@ class SocialView extends StatelessWidget {
                     // TODO : 갤러리에서 오운완 사진 찾아서 올릴 수 있도록 기능 구현
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryColor2,
+                    backgroundColor: AppColors.primaryColor,
                     padding: EdgeInsets.zero,
                     elevation: 0,
                     shape: RoundedRectangleBorder(

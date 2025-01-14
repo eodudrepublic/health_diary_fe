@@ -74,7 +74,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return GetMaterialApp(
           title: 'Health Diary',
-          initialRoute: '/make_routine',
+          initialRoute: '/home',
           getPages: [
             /// 로그인
             GetPage(name: '/login', page: () => LoginView()),
