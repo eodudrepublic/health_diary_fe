@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:get/get.dart';
 import '../common/utils/logger.dart';
 import '../common/server_url.dart';
-// import '../model/user_model.dart';
+import '../model/user_model.dart';
 
 class WorkoutService {
   /// $serverUrl:8000/exercises GET 요청으로 운동 리스트를 받아온다.
@@ -27,8 +26,8 @@ class WorkoutService {
     required double muscleMass,
     required double bodyFatPercentage,
   }) async {
-    // final userId = AppUser().id;
-    final userId = 3872309321; // 데모용
+    final userId = AppUser().id;
+    // final userId = 3872309321; // 데모용
 
     if (userId == null) {
       Log.warning("postBodyMetrics() 실패: userId가 null입니다. 로그인 여부를 확인하세요.");
@@ -71,8 +70,8 @@ class WorkoutService {
   // TODO : 현재 운동 기록 데이터 불러오는게 없어서 이걸로 대체
   /// - 성공 시, List<Map<String, dynamic>> 형태로 반환
   static Future<List<Map<String, dynamic>>?> fetchBodyMetrics() async {
-    // final userId = AppUser().id;
-    final userId = 3872309321; // 데모용
+    final userId = AppUser().id;
+    // final userId = 3872309321; // 데모용
 
     if (userId == null) {
       Log.warning("fetchBodyMetrics() 실패: userId가 null입니다. 로그인 여부를 확인하세요.");

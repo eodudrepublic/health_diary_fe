@@ -17,6 +17,6 @@ class ThemeController extends GetxController {
       AppColors.backgroundColor = AppColors.darkBackgroundColor;
     }
 
-    // TODO : 텍스트색도 변경해줘야 할듯? 생각보다
+    // TODO : 텍스트색도 변경해줘야 할듯?
   }
 }

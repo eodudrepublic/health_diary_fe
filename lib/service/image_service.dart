@@ -15,8 +15,8 @@ import '../model/user_model.dart';
 class ImageService extends GetxService {
   /// 오운완 사진 업로드
   static Future<Map<String, dynamic>?> uploadOwnPhoto(String imagePath) async {
-    // final userId = AppUser().id;
-    final userId = 3872309321;
+    final userId = AppUser().id;
+    // final userId = 3872309321;
     if (userId == null) {
       Log.warning("업로드 실패: userId가 null입니다. 로그인 여부를 확인하세요.");
       return null;
@@ -49,8 +49,8 @@ class ImageService extends GetxService {
 
   /// 식단 사진 업로드
   static Future<Map<String, dynamic>?> uploadMealPhoto(String imagePath) async {
-    // final userId = AppUser().id;
-    final userId = 3872309321;
+    final userId = AppUser().id;
+    // final userId = 3872309321;
     if (userId == null) {
       Log.warning("업로드 실패: userId가 null입니다. 로그인 여부를 확인하세요.");
       return null;
@@ -85,8 +85,8 @@ class ImageService extends GetxService {
   /// - GET $serverUrl:8000/users/{user_id}/own_photos
   /// - 성공 시, List<Map<String, dynamic>> 형태로 반환 (id, photo_path 필드만)
   static Future<List<Map<String, dynamic>>?> fetchOwnPhotos() async {
-    // final userId = AppUser().id;
-    final userId = 3872309321;
+    final userId = AppUser().id;
+    // final userId = 3872309321;
     if (userId == null) {
       Log.warning("조회 실패: userId가 null입니다. 로그인 여부를 확인하세요.");
       return null;
@@ -127,8 +127,8 @@ class ImageService extends GetxService {
   /// - GET $serverUrl:8000/users/{user_id}/meal_photos
   /// - 성공 시, List<Map<String, dynamic>> 형태로 반환 (id, photo_path 필드만)
   static Future<List<Map<String, dynamic>>?> fetchMealPhotos() async {
-    // final userId = AppUser().id;
-    final userId = 3872309321;
+    final userId = AppUser().id;
+    // final userId = 3872309321;
     if (userId == null) {
       Log.warning("조회 실패: userId가 null입니다. 로그인 여부를 확인하세요.");
       return null;
@@ -171,8 +171,8 @@ class ImageService extends GetxService {
   /// - body: {"photo_id": photoId, "base64_image": "test"}
   ///   TODO: photoId에 해당하는 실제 이미지를 base64로 인코딩해서 넣어야 함
   static Future<Map<String, dynamic>?> uploadSocialPhoto(int photoId) async {
-    // final userId = AppUser().id;
-    final userId = 3872309321;
+    final userId = AppUser().id;
+    // final userId = 3872309321;
     if (userId == null) {
       Log.warning("SNS 업로드 실패: userId가 null입니다. 로그인 여부를 확인하세요.");
       return null;
@@ -215,8 +215,8 @@ class ImageService extends GetxService {
   /// - 성공 시, List<Map<String, dynamic>> 형태로 반환
   ///   (id, user_id, datetime, photo_path, is_uploaded 필드)
   static Future<List<Map<String, dynamic>>?> fetchSocialPhotos() async {
-    // final userId = AppUser().id;
-    final userId = 3872309321;
+    final userId = AppUser().id;
+    // final userId = 3872309321;
     if (userId == null) {
       Log.warning("SNS 사진 조회 실패: userId가 null입니다. 로그인 여부를 확인하세요.");
       return null;
