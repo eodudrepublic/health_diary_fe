@@ -2,14 +2,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:http/http.dart' as http;
 import '../../common/app_colors.dart';
 import '../../common/server_url.dart';
 import '../../common/utils/logger.dart';
 import '../../common/widget/custom_bottom_navigation_bar.dart';
 import '../../view_model/mypage/mypage_controller.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-import 'package:http/http.dart' as http;
 
 class MyPageView extends StatelessWidget {
   final MyPageController _controller = Get.put(MyPageController());
@@ -111,7 +111,7 @@ class MyPageView extends StatelessWidget {
                       title: "테마",
                       onTap: () {
                         Log.info("테마 클릭");
-                        Get.toNamed('/theme');
+                        Get.toNamed('/set_theme');
                       }),
                   SectionItem(
                       title: "앱 잠금 등록", onTap: () => Log.info("앱 잠금 클릭")),

@@ -25,11 +25,13 @@ dependencies:
   table_calendar: ^3.2.0
   qr_flutter: ^4.1.0
   qr_code_scanner: ^1.0.0
+  shared_preferences: ^2.3.5
 
   camera: ^0.11.0+2
   image: ^4.5.2
   path_provider: ^2.1.5
   path: ^1.9.0
+  # 이 거지발싸개같은 놈 때문에 릴리즈 빌드가 안돼 씨발
   image_gallery_saver: ^2.0.3
   permission_handler: ^11.3.1
   external_app_launcher: ^4.0.1

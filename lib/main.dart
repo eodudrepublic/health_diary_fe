@@ -75,6 +75,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return GetMaterialApp(
           title: 'Man is Pink',
+          debugShowCheckedModeBanner: false,
           initialRoute: '/login',
           getPages: [
             /// 로그인
