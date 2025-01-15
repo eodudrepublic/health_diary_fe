@@ -46,7 +46,7 @@ class _RoutineViewState extends State<RoutineView> {
                       Get.back();
                     },
                     icon: Icon(Icons.arrow_back_rounded,
-                        color: AppColors.textGreyColor, size: 35.sp),
+                        color: AppColors.textGreyColor, size: 40.sp),
                   ),
 
                   /// 검색창

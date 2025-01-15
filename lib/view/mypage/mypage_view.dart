@@ -4,7 +4,7 @@ import '../../common/app_colors.dart';
 import '../../common/widget/custom_bottom_navigation_bar.dart';
 
 class MyPageView extends StatelessWidget {
-  MyPageView({super.key});
+  const MyPageView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,12 @@ class MyPageView extends StatelessWidget {
               Section(
                 title: "설정",
                 items: [
-                  SectionItem(title: "테마", onTap: () => print("테마 클릭")),
+                  SectionItem(
+                      title: "테마",
+                      onTap: () {
+                        // TODO : Get.toNamed('/set_theme');
+                        print("테마 클릭");
+                      }),
                   SectionItem(title: "앱 잠금 등록", onTap: () => print("앱 잠금 클릭")),
                   SectionItem(title: "보이스", onTap: () => print("보이스 클릭")),
                 ],
@@ -81,8 +86,7 @@ class MyPageView extends StatelessWidget {
                 items: [
                   SectionItem(title: "이용 약관", onTap: () => print("이용 약관 클릭")),
                   SectionItem(
-                      title: "개인정보 처리 방침",
-                      onTap: () => print("개인정보 처리 방침 클릭")),
+                      title: "개인정보 처리 방침", onTap: () => print("개인정보 처리 방침 클릭")),
                 ],
               ),
               SizedBox(height: 20.h),
@@ -246,20 +250,20 @@ class Section extends StatelessWidget {
                 .entries
                 .map(
                   (entry) => Column(
-                children: [
-                  ListTile(
-                    title: Text(
-                      entry.value.title,
-                      style:
-                      TextStyle(fontSize: 14.sp, color: Colors.white),
-                    ),
-                    onTap: entry.value.onTap,
+                    children: [
+                      ListTile(
+                        title: Text(
+                          entry.value.title,
+                          style:
+                              TextStyle(fontSize: 14.sp, color: Colors.white),
+                        ),
+                        onTap: entry.value.onTap,
+                      ),
+                      if (entry.key != items.length - 1)
+                        Divider(color: Colors.grey, thickness: 1),
+                    ],
                   ),
-                  if (entry.key != items.length - 1)
-                    Divider(color: Colors.grey, thickness: 1),
-                ],
-              ),
-            )
+                )
                 .toList(),
           ),
         ),

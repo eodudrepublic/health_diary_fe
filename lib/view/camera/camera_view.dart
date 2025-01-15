@@ -66,7 +66,6 @@ class CameraView extends StatelessWidget {
                         ),
                       ),
                       Spacer(),
-                      // 텍스트 "식단 기록"
                       Container(
                         height: 60.sp,
                         alignment: Alignment.center,
@@ -81,7 +80,7 @@ class CameraView extends StatelessWidget {
                       Spacer(),
                       SizedBox(
                         width: 80.sp,
-                      ) // 균형 유지
+                      )
                     ],
                   ),
                 )),

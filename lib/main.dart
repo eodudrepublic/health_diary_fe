@@ -9,6 +9,7 @@ import 'package:health_diary_fe/view/home/home_view.dart';
 import 'package:health_diary_fe/view/login/login_view.dart';
 import 'package:health_diary_fe/view/make_routine/routine_view.dart';
 import 'package:health_diary_fe/view/mypage/mypage_view.dart';
+import 'package:health_diary_fe/view/set_theme/theme_view.dart';
 import 'package:health_diary_fe/view/social/social_view.dart';
 import 'package:health_diary_fe/view_model/camera/camera_controller.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
@@ -74,7 +75,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return GetMaterialApp(
           title: 'Health Diary',
-          initialRoute: '/home',
+          initialRoute: '/set_theme',
           getPages: [
             /// 로그인
             GetPage(name: '/login', page: () => LoginView()),
@@ -110,6 +111,9 @@ class MyApp extends StatelessWidget {
 
             /// 메인 탭 4 : 마이페이지
             GetPage(name: '/mypage', page: () => MyPageView()),
+
+            /// 테마 설정
+            GetPage(name: '/set_theme', page: () => ThemeView()),
           ],
         );
       },
