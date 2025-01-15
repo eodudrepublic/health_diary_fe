@@ -11,6 +11,8 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double statusBarHeight = MediaQuery.of(context).padding.top;
+
     // KakaoLoginApi 인스턴스를 생성
     final KakaoLoginApi kakaoLoginApi = KakaoLoginApi();
 
@@ -26,10 +28,11 @@ class LoginView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(height: statusBarHeight),
             Expanded(
                 child: Container(
               alignment: Alignment.topLeft,
-              padding: EdgeInsets.only(top: 0.075.sh),
+              padding: EdgeInsets.only(top: 0.045.sh),
               child: Text("서비스 사용을 위해\n로그인이 필요해요",
                   style: TextStyle(
                       fontSize: 25.sp,
@@ -39,6 +42,7 @@ class LoginView extends StatelessWidget {
             )),
             _loginButton(userController),
             // _logoutButton(userController),
+            SizedBox(height: 0.05.sh),
           ],
         ),
       ),
