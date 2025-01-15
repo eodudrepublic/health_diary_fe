@@ -18,7 +18,6 @@ class CalendarController extends GetxController {
   var focusedDay = DateTime.now().obs;
 
   // 마커가 있는 날짜들
-  // TODO : WorkoutService의 fetchBodyMetrics() 메서드로 가져온 데이터에 있는 날짜에 마커 추가
   var markedDates = <DateTime>{}.obs;
 
   // 오운완 사진 경로 리스트

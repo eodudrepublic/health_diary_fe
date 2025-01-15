@@ -74,12 +74,13 @@ class MyApp extends StatelessWidget {
       designSize: const Size(400, 860),
       builder: (context, child) {
         return GetMaterialApp(
-          title: 'Health Diary',
-          initialRoute: '/set_theme',
+          title: 'Man is Pink',
+          initialRoute: '/login',
           getPages: [
             /// 로그인
             GetPage(name: '/login', page: () => LoginView()),
 
+            // TODO : 메인 탭들 화면 전환 효과 추가
             /// 메인 탭 1 : 홈
             GetPage(name: '/home', page: () => HomeView()),
 
