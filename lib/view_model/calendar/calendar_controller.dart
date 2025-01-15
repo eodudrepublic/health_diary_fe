@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:get/get.dart';
-import '../../service/image_service.dart';
 import '../../common/utils/logger.dart';
+import '../../service/image_service.dart';
+import '../../service/workout_service.dart';
 
 class CalendarController extends GetxController {
   // 현재 선택된 탭 상태
@@ -17,6 +18,7 @@ class CalendarController extends GetxController {
   var focusedDay = DateTime.now().obs;
 
   // 마커가 있는 날짜들
+  // TODO : WorkoutService의 fetchBodyMetrics() 메서드로 가져온 데이터에 있는 날짜에 마커 추가
   var markedDates = <DateTime>{}.obs;
 
   // 오운완 사진 경로 리스트
@@ -24,6 +26,18 @@ class CalendarController extends GetxController {
 
   // 식단 사진 경로 리스트
   var mealPhotoPaths = <String>[].obs;
+
+  // ─────────────────────────────────────────────────────────
+  // [운동] 탭에 보여줄 신체 기록 데이터
+  // ─────────────────────────────────────────────────────────
+  var bodyMetrics = <Map<String, dynamic>>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    // 화면 진입 시, 신체 기록 불러오기
+    loadBodyMetrics();
+  }
 
   // 탭 선택 메서드
   void changeTab(int index) {
@@ -54,6 +68,7 @@ class CalendarController extends GetxController {
 
   // 마커 추가 메서드
   void addMarker(DateTime date) {
+    Log.trace("마커 추가: $date");
     markedDates.add(date);
   }
 
@@ -67,6 +82,29 @@ class CalendarController extends GetxController {
     return markedDates
         .where((date) => date.year == month.year && date.month == month.month)
         .toList();
+  }
+
+  /// WorkoutService에서 신체 기록 데이터를 불러와 저장
+  Future<void> loadBodyMetrics() async {
+    final results = await WorkoutService.fetchBodyMetrics();
+    if (results != null) {
+      bodyMetrics.value = results;
+      Log.info("신체 기록 불러오기 완료. 총 ${results.length}개");
+
+      // 가져온 신체 기록의 날짜들을 마커로 추가
+      for (var item in results) {
+        if (item["record_date"] != null) {
+          try {
+            final date = DateTime.parse(item["record_date"]);
+            addMarker(date);
+          } catch (e) {
+            Log.warning("record_date 파싱 실패: ${item["record_date"]} / $e");
+          }
+        }
+      }
+    } else {
+      Log.warning("신체 기록 조회 결과가 없습니다.");
+    }
   }
 
   // ─────────────────────────────────────────────────────────

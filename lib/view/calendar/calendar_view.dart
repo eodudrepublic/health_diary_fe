@@ -109,7 +109,7 @@ class CalendarView extends StatelessWidget {
               switch (controller.selectedIndex.value) {
                 case 0:
                   // ─────────────────────────────────────────────────────────
-                  // 운동 탭 (기존 달력 + 하단 몸 상태 변화)
+                  // 운동 탭 (달력 + 하단 몸 상태 변화)
                   // ─────────────────────────────────────────────────────────
                   return SingleChildScrollView(
                     child: Column(
@@ -141,19 +141,79 @@ class CalendarView extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(
                                   vertical: 0.03.sw,
                                 ),
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: const [
-                                      // TODO : 디자인 참고하여 그래프나 통계 UI 적용
-                                      SizedBox(width: 20),
-                                      Text("몸무게 그래프/정보",
-                                          style:
-                                              TextStyle(color: Colors.white)),
-                                    ],
-                                  ),
-                                ),
+                                child: Obx(() {
+                                  final data = controller.bodyMetrics;
+                                  if (data.isEmpty) {
+                                    return const Center(
+                                      child: Text(
+                                        "신체 기록이 없습니다.",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    );
+                                  }
+
+                                  return SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: data.map((item) {
+                                        // 날짜 추출
+                                        final recordDateStr =
+                                            item["record_date"] ?? "";
+                                        final recordDate =
+                                            DateTime.tryParse(recordDateStr);
+
+                                        // 월/일
+                                        final displayDateString = recordDate !=
+                                                null
+                                            ? '${recordDate.month}/${recordDate.day}'
+                                            : '-';
+
+                                        // 몸무게
+                                        final weight =
+                                            (item["weight"] ?? "").toString();
+
+                                        return Container(
+                                          margin: EdgeInsets.only(right: 20.sp),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              // 동그라미 안에 몸무게 표시
+                                              Container(
+                                                width: 50.sp,
+                                                height: 50.sp,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: AppColors.primaryColor,
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    weight,
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 16.sp,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(height: 5.sp),
+                                              // 날짜 표시
+                                              Text(
+                                                displayDateString,
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16.sp,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  );
+                                }),
                               ),
+
+                              SizedBox(height: 10.sp),
 
                               /// 골격근량
                               Container(
@@ -170,18 +230,157 @@ class CalendarView extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(
                                   vertical: 0.03.sw,
                                 ),
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: const [
-                                      // TODO : 디자인 참고하여 그래프나 통계 UI 적용
-                                      SizedBox(width: 20),
-                                      Text("골격근량 그래프/정보",
-                                          style:
-                                              TextStyle(color: Colors.white)),
-                                    ],
+                                child: Obx(() {
+                                  final data = controller.bodyMetrics;
+                                  if (data.isEmpty) {
+                                    return const Center(
+                                      child: Text(
+                                        "신체 기록이 없습니다.",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    );
+                                  }
+
+                                  return SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: data.map((item) {
+                                        final recordDateStr =
+                                            item["record_date"] ?? "";
+                                        final recordDate =
+                                            DateTime.tryParse(recordDateStr);
+                                        final displayDateString = recordDate !=
+                                                null
+                                            ? '${recordDate.month}/${recordDate.day}'
+                                            : '-';
+
+                                        // 골격근량
+                                        final muscleMass =
+                                            (item["muscle_mass"] ?? "")
+                                                .toString();
+
+                                        return Container(
+                                          margin: EdgeInsets.only(right: 20.sp),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Container(
+                                                width: 50.sp,
+                                                height: 50.sp,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: AppColors.primaryColor,
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    muscleMass,
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 16.sp,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(height: 5.sp),
+                                              Text(
+                                                displayDateString,
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16.sp,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  );
+                                }),
+                              ),
+
+                              SizedBox(height: 10.sp),
+
+                              /// 체지방률
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "체지방률",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20.sp,
                                   ),
                                 ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 0.03.sw,
+                                ),
+                                child: Obx(() {
+                                  final data = controller.bodyMetrics;
+                                  if (data.isEmpty) {
+                                    return const Center(
+                                      child: Text(
+                                        "신체 기록이 없습니다.",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    );
+                                  }
+
+                                  return SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: data.map((item) {
+                                        final recordDateStr =
+                                            item["record_date"] ?? "";
+                                        final recordDate =
+                                            DateTime.tryParse(recordDateStr);
+                                        final displayDateString = recordDate !=
+                                                null
+                                            ? '${recordDate.month}/${recordDate.day}'
+                                            : '-';
+
+                                        // 체지방률
+                                        final bodyFat =
+                                            (item["body_fat_percentage"] ?? "")
+                                                .toString();
+
+                                        return Container(
+                                          margin: EdgeInsets.only(right: 20.sp),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Container(
+                                                width: 50.sp,
+                                                height: 50.sp,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: AppColors.primaryColor,
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    bodyFat,
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 16.sp,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(height: 5.sp),
+                                              Text(
+                                                displayDateString,
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16.sp,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ),
+                                  );
+                                }),
                               ),
                             ],
                           ),
@@ -340,9 +539,10 @@ class CalendarView extends StatelessWidget {
               },
 
               /// 마커
-              // TODO : 마커 적용해보고 스타일 수정 ㄱㄱ
               markerBuilder: (context, date, events) {
-                if (controller.markedDates.contains(date)) {
+                final isMarked = controller.markedDates
+                    .any((markedDate) => isSameDay(markedDate, date));
+                if (isMarked) {
                   return Positioned(
                     bottom: 1,
                     child: Container(
